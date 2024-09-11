@@ -1,5 +1,7 @@
 {{ define "main" }} <!-- Se define el bloque para que pueda ser usado en el baseof -->
 
+<!-- Si estamos en /categories/ se muestra la lista de categorías -->
+<!-- Si estamos en /categories/[category], se muestra la lista de páginas de esa categoría -->
 {{ if eq .RelPermalink "/categories/" }}
 {{ range $.Site.Taxonomies.categories.ByCount }}
     <a href="/categories/{{ .Name}}">
