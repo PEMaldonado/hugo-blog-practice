@@ -1,0 +1,33 @@
+{{ define "main" }} <!-- Se define el bloque para que pueda ser usado en el baseof -->
+<div class="list">
+    {{ range .Paginator.Pages }} <!-- Se itera sobre las páginas (las que estan en content) utilizando un paginador (Range = Map o Foreach)-->
+        <div class="listItem">
+            <!-- Cuando hacemos .Params nos referimos al frontmatter de la página que esta siendo iterada, pero a las variables -->
+            <!-- Por eso para la imagen hay q ir a .Params pero para el titulo es solo .Title --> 
+            <img src="{{ .Params.image }}"  alt="{{ .Title }}" class="listItemImage" loading="lazy">
+            <div class="listItemTexts">
+                <h1 class="listItemTitle">
+                    <!-- .Permalink nos da la url de la página que esta siendo iterada -->
+                    <a href="{{ .Permalink }}">{{ .Title }}</a>
+                </h1>
+                <p class="listItemDesc">{{ .Params.description }}</p>
+                <div class="listItemDetail">
+                    <img src="{{ .Params.avatar }}" loading="lazy" alt="" class="listItemAvatar">
+                    <!-- .GetTerms nos da el/los autores que tiene la página que estamos iterando -->
+                    <!-- Se utiliza asi porque GetTerms devuelve un array -->
+                    <span>{{range (.GetTerms "authors")}} 
+                        <a class="listItemAuthor" href="{{ .Permalink }}">{{ .Name }}</a>
+                        {{ end }}
+                    </span>
+                    <time datetime="">{{ dateFormat .Site.Params.dateFormat .Date }}</time>
+                </div>
+                <div class="listItemCategories">
+                    {{ range (.GetTerms "categories")}}
+                    <a class="listItemCategory" href="{{ .Permalink }}" >{{ .Name }}</a>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    {{ end }} {{ template "_internal/pagination.html" . }}
+</div>
+{{ end }}
